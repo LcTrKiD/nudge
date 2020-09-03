@@ -5,8 +5,7 @@ from os.path import join
 from datetime import datetime, timedelta
 
 # pylint: disable=no-name-in-module
-from Foundation import (NSURL, NSData, NSTimer,
-                        NSDate, NSRunLoop, NSRunLoopCommonModes)
+from Foundation import NSURL, NSData, NSTimer, NSDate
 from AppKit import NSImage
 # pylint: enable=no-name-in-module
 
@@ -27,8 +26,8 @@ from .prefs import set_app_pref
 
 class UX():
     '''Class that define the UX a user will have'''
-    def __init__(self, builder_ojb, nudge_prefs):
-        self.nibbler = builder_ojb
+    def __init__(self, builder_obj, nudge_prefs):
+        self.nibbler = builder_obj
         self.nudge = self.nibbler.nudge
         self.nudge_path = self.nibbler.nudge_path
         self.nudge_prefs = nudge_prefs
@@ -102,7 +101,6 @@ class UX():
             self.timer = self._determine_timer()()
             self.nibbler.timer = _set_Nibbler_timer(self.timer,
                                                     self.nibbler.timer_controller)
-            _run_timer_in_main_loop(self.nibbler.timer)
         else:
             self._set_no_cutoff_date_ux()
         self._no_timer()
@@ -205,11 +203,6 @@ def _set_Nibbler_timer(timer, timer_controller):
     return (NSTimer
             .scheduledTimerWithTimeInterval_target_selector_userInfo_repeats_(
                 timer, timer_controller, 'activateWindow:', None, True))
-
-
-def _run_timer_in_main_loop(nstimer):
-    nudgelog(f'Trying to set up the nstimer in the main run loop using: {NSRunLoopCommonModes}')
-    NSRunLoop.currentRunLoop().addTimer_forMode_(nstimer, NSRunLoopCommonModes)
 
 
 if __name__ == '__main__':

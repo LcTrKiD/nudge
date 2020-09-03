@@ -26,8 +26,6 @@ class TimerController(NSObject):
 
     def activateWindow_(self, timer_obj):
         self.determine_state_and_nudge()
-        nudgelog(f'Setting up DEFERRAL COUNT value to: {self.nudge_dismissed_count}')
-        self.nudge.views['field.deferralcount'].setStringValue_(str(1))
 
     def determine_state_and_nudge(self):
         '''Determine the state of nudge and re-fresh window'''
@@ -72,10 +70,11 @@ class TimerController(NSObject):
                 bring_nudge_to_forefront(self.nudge)
                 # Pretend to open the button and open the update mechanism
                 self.nudge.button_update(True)
+            self.ux_when_timer_is_controlling()
 
     def ux_when_timer_is_controlling(self):
         nudgelog(f'Setting up DEFERRAL COUNT value to: {self.nudge_dismissed_count}')
-        self.nudge.views[DEFERRAL_COUNT].setStringValue_(str(self.nudge_dismissed_count))
+        self.nudge.nudge.views[DEFERRAL_COUNT].setStringValue_(str(self.nudge_dismissed_count))
 
 
 def bring_nudge_to_forefront(nudge):
